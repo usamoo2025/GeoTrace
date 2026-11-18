@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>GeoTrace | Visitor Details</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background: #090e1b;
+            color: #f1f5ff;
+            font-family: Inter, sans-serif;
+            padding: 35px 20px;
+        }
+
+        .container {
+            max-width: 950px;
+            margin: auto;
+        }
+
+        .back {
+            color: #a99eff;
+            text-decoration: none;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 20px;
+            margin: 25px 0;
+        }
+
+        h1 {
+            font-size: 25px;
+        }
+
+        header p {
+            color: #8290aa;
+            font-size: 12px;
+            margin-top: 8px;
+        }
+
+        .panel {
+            background: #121c30;
+            border: 1px solid rgba(255,255,255,.08);
+            border-radius: 15px;
+            padding: 24px;
+            margin-bottom: 18px;
+        }
+
+        .panel h2 {
+            font-size: 14px;
+            margin-bottom: 20px;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 13px;
+        }
+
+        .field {
+            background: #0b1426;
+            padding: 15px;
+            border-radius: 10px;
+            border: 1px solid rgba(255,255,255,.05);
+            min-width: 0;
+        }
+
+        .field small {
+            color: #8290aa;
+            font-size: 10px;
+            display: block;
+            margin-bottom: 9px;
+        }
+
+        .field strong {
+            font-size: 12px;
+            font-weight: 600;
+            overflow-wrap: anywhere;
+        }
+
+        .actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 22px;
+        }
+
+        .btn {
+            display: inline-block;
+            border: 0;
+            border-radius: 9px;
+            padding: 12px 17px;
+            color: white;
+            background: #6355df;
+            font-size: 11px;
+            font-weight: 700;
+            cursor: pointer;
+            text-decoration: none;
+        }
+
+        .delete {
+            background: #a83c55;
+        }
+
+        @media(max-width: 600px) {
+            .grid {
+                grid-template-columns: 1fr;
+            }
+
+            header {
+                align-items: flex-start;
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <a href="/#visits" class="back">← Back to Dashboard</a>
+
+    <header>
+        <div>
+            <h1>Visitor Record #{{ visit.id }}</h1>
+            <p>Complete information available for this record.</p>
+        </div>
+    </header>
+
+    <section class="panel">
+        <h2>Network Information</h2>
+
+        <div class="grid">
+            <div class="field">
+                <small>IP Address</small>
+                <strong>{{ visit.ip_address or 'Not available' }}</strong>
+            </div>
+
+            <div class="field">
+                <small>ISP / Provider</small>
+                <strong>{{ visit.isp or 'Not available' }}</strong>
+            </div>
+
+            <div class="field">
+                <small>Country</small>
+                <strong>{{ visit.country or 'Not available' }}</strong>
+            </div>
+
+            <div class="field">
+                <small>Region</small>
+                <strong>{{ visit.region or 'Not available' }}</strong>
+            </div>
+
+            <div class="field">
+                <small>City</small>
+                <strong>{{ visit.city or 'Not available' }}</strong>
+            </div>
+
+            <div class="field">
+                <small>Browser / User Agent</small>
+                <strong>{{ visit.user_agent or 'Not available' }}</strong>
+            </div>
+        </div>
+    </section>
+
+    <section class="panel">
+        <h2>GPS Information</h2>
+
+        <div class="grid">
+
+            <div class="field">
+                <small>Latitude</small>
+                <strong>{{ visit.latitude if visit.latitude is not none else 'Not shared' }}</strong>
+            </div>
+
+            <div class="field">
+                <small>Longitude</small>
+                <strong>{{ visit.longitude if visit.longitude is not none else 'Not shared' }}</strong>
+            </div>
+
+            <div class="field">
+                <small>Altitude</small>
+                <strong>
+                    {% if visit.altitude is not none %}
+                        {{ visit.altitude }} m
+                    {% else %}Not available{% endif %}
+                </strong>
+            </div>
+
+            <div class="field">
+                <small>GPS Accuracy</small>
+                <strong>
+                    {% if visit.accuracy is not none %}
+                        {{ visit.accuracy }} m
+                    {% else %}Not available{% endif %}
+                </strong>
+            </div>
+
+            <div class="field">
+                <small>Altitude Accuracy</small>
+                <strong>
+                    {% if visit.altitude_accuracy is not none %}
+                        {{ visit.altitude_accuracy }} m
+                    {% else %}Not available{% endif %}
+                </strong>
+            </div>
+
+            <div class="field">
+                <small>Heading</small>
+                <strong>{{ visit.heading if visit.heading is not none else 'Not available' }}</strong>
+            </div>
+
+            <div class="field">
+                <small>Speed</small>
+                <strong>
+                    {% if visit.speed is not none %}
+                        {{ visit.speed }} m/s
+                    {% else %}Not available{% endif %}
+                </strong>
+            </div>
+
+            <div class="field">
+                <small>Location Sharing Status</small>
+                <strong>{{ visit.location_status or 'Not available' }}</strong>
+            </div>
+
+        </div>
+    </section>
+
+    <section class="panel">
+        <h2>Record Information</h2>
+
+        <div class="grid">
+            <div class="field">
+                <small>Record ID</small>
+                <strong>#{{ visit.id }}</strong>
+            </div>
+
+            <div class="field">
+                <small>Link Code</small>
+                <strong>{{ visit.link_code }}</strong>
+            </div>
+
+            <div class="field">
+                <small>Visit Date</small>
+                <strong>{{ visit.visited_at or 'Not available' }}</strong>
+            </div>
+
+            <div class="field">
+                <small>GPS Timestamp</small>
+                <strong>{{ visit.location_timestamp or 'Not available' }}</strong>
+            </div>
+        </div>
+
+        <div class="actions">
+
+            <a class="btn"
+               href="/visits/{{ visit.id }}/export.pdf">
+                ↓ Export This Record as PDF
+            </a>
+
+            <form method="POST"
+                  action="/visits/{{ visit.id }}/delete"
+                  onsubmit="return confirm('Permanently delete this record?');">
+
+                <button class="btn delete" type="submit">
+                    Delete Record
+                </button>
+
+            </form>
+
+        </div>
+    </section>
+
+</div>
+
+</body>
+</html>
