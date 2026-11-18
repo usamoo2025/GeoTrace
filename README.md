@@ -13,7 +13,7 @@
 ![Frontend](https://img.shields.io/badge/Frontend-HTML%20%7C%20CSS%20%7C%20JavaScript-orange)
 ![License](https://img.shields.io/badge/License-GPL--3.0-blue)
 
-[GitHub Repository](YOUR_REPOSITORY_URL) • [Report an Issue](YOUR_REPOSITORY_URL/issues) • [GitHub Profile](YOUR_GITHUB_PROFILE)
+[GitHub Repository](https://github.com/usamoo2025/GeoTrace) • [Report an Issue](https://github.com/usamoo2025/GeoTrace/issues) • [GitHub Profile](https://github.com/usamoo2025)
 
 </div>
 
